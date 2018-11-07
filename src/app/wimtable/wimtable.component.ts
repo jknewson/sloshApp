@@ -32,7 +32,8 @@ export class WimtableComponent implements OnInit {
   }
   DrankWater(Name:string){
     const updatedMember = this.members$.value[Name];
-    updatedMember.beer--;
+    if (updatedMember.beer >0)
+    updatedMember.beer-= 0.5;
     updatedMember.water++;
     this.updateMember(updatedMember);
     }
