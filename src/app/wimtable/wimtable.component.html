@@ -17,7 +17,7 @@
   <ng-container cdkColumnDef="beer">
     <th cdk-header-cell *cdkHeaderCellDef> Beer </th>
     <td cdk-cell *cdkCellDef="let row">
-      <button class="btn btn-primary" (click)="DrankBeer(row.name)">{{row.beer}}</button>
+      <button class="btn btn-primary" (click)="DrankBeer(row.name)">{{row.beer}} <i class="fas fa-beer"></i></button>
     </td>
   </ng-container>
 
@@ -25,7 +25,7 @@
    <ng-container cdkColumnDef="water">
       <th cdk-header-cell *cdkHeaderCellDef> Water </th>
       <td cdk-cell *cdkCellDef="let row">
-        <button class="btn btn-primary" (click)="DrankWater(row.name)">{{row.water}}</button>
+        <button class="btn btn-primary" (click)="DrankWater(row.name)">{{row.water}} <i class="fab fa-bitbucket"></i></button>
       </td>
     </ng-container>
 
@@ -33,7 +33,7 @@
    <ng-container cdkColumnDef="sleep">
       <th cdk-header-cell *cdkHeaderCellDef></th>
       <td cdk-cell *cdkCellDef="let row">
-        <button class="btn btn-primary" (click)="Slept(row.name)">Slept it off.</button>
+        <button class="btn btn-primary" (click)="Slept(row.name)"><i class="fas fa-bed"></i> Slept it off.</button>
       </td>
     </ng-container>
 </table>
