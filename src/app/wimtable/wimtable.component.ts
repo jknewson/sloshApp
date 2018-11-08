@@ -24,37 +24,45 @@ export class WimtableComponent implements OnInit {
     this.minMax$ = this.members$.pipe(
       map(v=>{
       const values = Object.values(v);
-      const max = maxBy(values,'beer').name;
-      const min = minBy(values,'beer').name;
+      const max = maxBy(values,'beercount').name;
+      const min = minBy(values,'beercount').name;
       return {min,max};
       })
       );
   }
   DrankWater(Name:string){
     const updatedMember = this.members$.value[Name];
-    if (updatedMember.beer >0)
-    updatedMember.beer-= 0.5;
-    updatedMember.water++;
+    if (updatedMember.beercount >0)
+    updatedMember.beercount-= 0.5;
     this.updateMember(updatedMember);
     }
     
     DrankBeer(Name:string){
     const updatedMember = this.members$.value[Name];
-    updatedMember.beer++;
+    updatedMember.beercount++;
     this.updateMember(updatedMember);
     }
     
     Slept(Name:string){
     const updatedMember = this.members$.value[Name];
-    updatedMember.beer=0;
-    updatedMember.water=0;
+    updatedMember.beercount=0;
     this.updateMember(updatedMember);
     }
     
     private updateMember(memberdata:any){
     //spread syntax
-    const newMemberData={...this.members$.value,[memberdata.name]:memberdata};
+    const newMemberData={...this.members$.value,[memberdata.name]:memberdata};    
     this.members$.next(newMemberData);
+    
+    //sourt
+    const sortedsources = Object.values(this.dataSource$).sort((a, b) => {
+      return a.beercount>b.beercount ? -1 : a.beercount<b.beercount ? 1 : 0;
+    });
+
+    this.members$.next(sortedsources);
+  
+
+
     }
 
 }
