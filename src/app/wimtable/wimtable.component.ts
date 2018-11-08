@@ -19,7 +19,9 @@ export class WimtableComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.dataSource$ = this.members$.pipe(map(v=>Object.values(v)));
+    this.dataSource$ = this.members$.pipe(map(v=>Object.values(v).sort((a, b) => {
+      return a.beercount>b.beercount ? -1 : a.beercount<b.beercount ? 1 : 0;
+    })));
  
     this.minMax$ = this.members$.pipe(
       map(v=>{
@@ -53,16 +55,6 @@ export class WimtableComponent implements OnInit {
     //spread syntax
     const newMemberData={...this.members$.value,[memberdata.name]:memberdata};    
     this.members$.next(newMemberData);
-    
-    //sourt
-    const sortedsources = Object.values(this.dataSource$).sort((a, b) => {
-      return a.beercount>b.beercount ? -1 : a.beercount<b.beercount ? 1 : 0;
-    });
-
-    this.members$.next(sortedsources);
-  
-
-
     }
 
 }

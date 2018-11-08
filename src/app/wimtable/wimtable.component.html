@@ -4,8 +4,7 @@
   <tr cdk-header-row *cdkHeaderRowDef="columns"></tr>
   <!-- <tr cdk-row *cdkRowDef="let row; columns: columns"></tr> -->
   <tr cdk-row *cdkRowDef="let row; columns: columns" [ngClass]="{
-    'bg-success':(minMax$ | async)?.max === row.name,
-    'bg-danger':(minMax$ | async)?.min === row.name
+    'bg-success':(minMax$ | async)?.max === row.name
     }"></tr>
   <!-- Name Column -->
   <ng-container cdkColumnDef="name">
@@ -36,8 +35,6 @@
         <button class="btn btn-primary" (click)="DrankWater(row.name)"><i class="fab fa-bitbucket"></i></button>
       </td>
     </ng-container>
-
-
 
      <!-- Sleep Column -->
    <ng-container cdkColumnDef="sleep">
