@@ -1,19 +1,18 @@
 
-<table cdk-table [dataSource]="dataSource$" class="table table-hover">  
+<table cdk-table [dataSource]="members$" class="table table-hover">  
   <!-- Header and Row Declarations -->
   <tr cdk-header-row *cdkHeaderRowDef="columns"></tr>
-  <!-- <tr cdk-row *cdkRowDef="let row; columns: columns"></tr> -->
   <tr cdk-row *cdkRowDef="let row; columns: columns" [ngClass]="{
     'bg-success':(minMax$ | async)?.max === row.name
     }"></tr>
-  <!-- Name Column -->
-  <ng-container cdkColumnDef="name">
+  <!-- name Column -->
+  <ng-container cdkColumnDef="Name">
     <th cdk-header-cell *cdkHeaderCellDef> Name </th>
     <td cdk-cell *cdkCellDef="let row"> {{row.name}} </td>
   </ng-container>
 
   <!-- count Column -->
-  <ng-container cdkColumnDef="beercount">
+  <ng-container cdkColumnDef="BeerCount">
     <th cdk-header-cell *cdkHeaderCellDef> Slosh Meter </th>
     <td cdk-cell *cdkCellDef="let row">
       {{row.beercount}}
@@ -21,26 +20,26 @@
   </ng-container>
 
   <!-- Beer Column -->
-  <ng-container cdkColumnDef="beer">
+  <ng-container cdkColumnDef="Beer">
     <th cdk-header-cell *cdkHeaderCellDef> Beer </th>
     <td cdk-cell *cdkCellDef="let row">
-      <button class="btn btn-primary" (click)="DrankBeer(row.name)"><i class="fas fa-beer"></i></button>
+      <button class="btn btn-primary" (click)="DrankBeer(row)"><i class="fas fa-beer"></i></button>
     </td>
   </ng-container>
 
    <!-- Water Column -->
-   <ng-container cdkColumnDef="water">
+   <ng-container cdkColumnDef="Water">
       <th cdk-header-cell *cdkHeaderCellDef> Water </th>
       <td cdk-cell *cdkCellDef="let row">
-        <button class="btn btn-primary" (click)="DrankWater(row.name)"><i class="fab fa-bitbucket"></i></button>
+        <button class="btn btn-primary" (click)="DrankWater(row)"><i class="fab fa-bitbucket"></i></button>
       </td>
     </ng-container>
 
      <!-- Sleep Column -->
-   <ng-container cdkColumnDef="sleep">
+   <ng-container cdkColumnDef="Sleep">
       <th cdk-header-cell *cdkHeaderCellDef></th>
       <td cdk-cell *cdkCellDef="let row">
-        <button class="btn btn-primary" (click)="Slept(row.name)"><i class="fas fa-bed"></i> Slept it off.</button>
+        <button class="btn btn-primary" (click)="Slept(row)"><i class="fas fa-bed"></i> Slept it off.</button>
       </td>
     </ng-container>
 </table>

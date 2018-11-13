@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {BehaviorSubject,Observable, from } from 'rxjs';
+import {Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import {minBy,maxBy} from 'lodash';
-
-import {columnNames,membersDictionary} from './data';
+import { AngularFireDatabase,AngularFireList } from 'angularfire2/database';
+import { FirebaseDatabase, FirebaseOptionsToken } from 'angularfire2';
 
 @Component({
   selector: 'app-wimtable',
@@ -12,18 +12,25 @@ import {columnNames,membersDictionary} from './data';
   styleUrls: ['./wimtable.component.css']
 })
 export class WimtableComponent implements OnInit {
-  private members$ = new BehaviorSubject<{[name: string]: any}>(membersDictionary);
+  private datasource$:AngularFireList<any>;
+  public members$:Observable<any> =null;
   minMax$:Observable<any>;
-  dataSource$:Observable<any[]>;
-  columns = columnNames;
-  constructor() { }
+  columns = [
+    'Name',
+    'BeerCount',
+    'Beer',
+    'Water',
+    'Sleep'
+    ];
+  constructor( private db:AngularFireDatabase) { }
 
   ngOnInit() {
-    this.dataSource$ = this.members$.pipe(map(v=>Object.values(v).sort((a, b) => {
+    this.datasource$ =  this.db.list('users',ref=>ref.orderByChild('beercount'));
+    this.members$ = this.datasource$.valueChanges().pipe(map(v=>Object.values(v).sort((a, b) => {
       return a.beercount>b.beercount ? -1 : a.beercount<b.beercount ? 1 : 0;
     })));
- 
-    this.minMax$ = this.members$.pipe(
+
+      this.minMax$ = this.members$.pipe(
       map(v=>{
       const values = Object.values(v);
       const max = maxBy(values,'beercount').name;
@@ -32,29 +39,27 @@ export class WimtableComponent implements OnInit {
       })
       );
   }
-  DrankWater(Name:string){
-    const updatedMember = this.members$.value[Name];
-    if (updatedMember.beercount >0)
-    updatedMember.beercount-= 0.5;
-    this.updateMember(updatedMember);
+  DrankWater(updatedMember:any){
+      if (updatedMember.beercount >0){
+          updatedMember.beercount-= 0.5;
+          this.updateMember(updatedMember);
+      }
     }
     
-    DrankBeer(Name:string){
-    const updatedMember = this.members$.value[Name];
-    updatedMember.beercount++;
-    this.updateMember(updatedMember);
+    DrankBeer(updatedMember:any){
+      updatedMember.beercount++;
+      this.updateMember(updatedMember);
     }
     
-    Slept(Name:string){
-    const updatedMember = this.members$.value[Name];
-    updatedMember.beercount=0;
-    this.updateMember(updatedMember);
+    Slept(updatedMember:any){
+      updatedMember.beercount=0;
+      this.updateMember(updatedMember);
     }
     
     private updateMember(memberdata:any){
-    //spread syntax
-    const newMemberData={...this.members$.value,[memberdata.name]:memberdata};    
-    this.members$.next(newMemberData);
+      let ref = memberdata;
+      this.db.object('users/'+memberdata.id)
+      .update({'beercount':memberdata.beercount});
     }
 
 }
